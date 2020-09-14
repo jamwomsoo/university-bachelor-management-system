@@ -1,0 +1,1053 @@
+package aais;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+public class PrimaryPanel extends JPanel {
+
+	private JPanel mainPanel;
+	private JPanel tempPanel;
+	private JComboBox cmbMenu;
+	private String[] strMenu = { "STUDENT", "PROFESSOR", "COURSE", "DEPARTMENT", "ATTEND"};
+	private JButton btnSearch;
+	private JScrollPane jScrollPane;
+	private JScrollPane jScrollPane2;
+	private JTable jTable;
+	
+	JTextField txtStuWhere;
+	JTextField txtStuNum;
+	JTextField txtChargeProfNum;
+	JTextField txtStuAffDepNum;
+	JTextField txtStuName;
+	JTextField txtStuSSNum;
+	JTextField txtStuAddress;
+	JTextField txtStuPhoneNum;
+	JTextField txtStuEmail;
+	JTextField txtCurGrade;
+	JTextField txtCurSem;
+	
+	JTextField txtProfWhere;
+	JTextField txtProfNum;
+	JTextField txtProfAffDepNum;
+	JTextField txtProfName;
+	JTextField txtProfSSNum;
+	JTextField txtProfAddress;
+	JTextField txtProfPhoneNum;
+	JTextField txtProfEmail;
+	
+	JTextField txtCourseWhere;
+	JTextField txtCourseNum;
+	JTextField txtProgressProfNum;
+	JTextField txtProgressDepNum;
+	JTextField txtCourseName;
+	JTextField txtReceivedCredits;
+	JTextField txtCourseTime;
+	JTextField txtLecRoom;
+	
+	JTextField txtDepWhere;
+	JTextField txtDepNum;
+	JTextField txtDepName;
+	JTextField txtDepPhoneNum;
+	
+	JTextField txtAttendWhere;
+	JTextField txtAttendStuNum;
+	JTextField txtAttendCourseNum;
+	JTextField txtAttendProfNum;
+	JTextField txtAttendanceScore;
+	JTextField txtMidScore;
+	JTextField txtFinScore;
+	JTextField txtEtcScore;
+	JTextField txtTotalScore;
+	JTextField txtGrade;
+	
+
+	private BtnListener btnL;
+
+	private DatabaseConnect dbConnect;
+
+	public PrimaryPanel() {
+		// db connect
+		dbConnect = new DatabaseConnect();
+
+		// Listener
+		btnL = new BtnListener();
+
+		// primary panel
+		setBackground(Color.white);
+		setPreferredSize(new Dimension(1500, 900));
+		setLayout(null);
+
+		setPage();
+	}
+
+	public void setPage() {
+
+		mainPanel = new JPanel();
+		mainPanel.setBounds(50, 150, 1400, 650);
+		mainPanel.setBackground(new Color(245, 245, 245));
+		mainPanel.setLayout(null);
+
+		// combo box for choosing table
+		cmbMenu = new JComboBox();
+		for (String str : strMenu)
+			cmbMenu.addItem(str);
+		cmbMenu.setBounds(105, 105, 170, 40);
+		cmbMenu.setFont(new Font("Verdana", Font.PLAIN, 18));
+		add(cmbMenu);
+
+		btnSearch = new JButton("Search");
+		btnSearch.setBounds(285, 105, 80, 40);
+		btnSearch.setFont(new Font("Verdana", Font.PLAIN, 13));
+		btnSearch.addActionListener(btnL);
+		add(btnSearch);
+
+		add(mainPanel);
+		setVisible(true);	
+	}
+
+	private JPanel getStudentTable(String condition) {
+		JPanel jPanel = new JPanel();
+		jPanel.setBounds(0, 0, 1400, 650);
+		jPanel.setBackground(new Color(245, 245, 245));
+		jPanel.setLayout(null);
+		
+		/*******SELECT********/
+		JLabel lbSelect = new JLabel("SELECT");
+		lbSelect.setBounds(80,20,100,40);
+		lbSelect.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbSelect);
+		
+		JLabel lbWhere = new JLabel("Where : ");
+		lbWhere.setBounds(80,60,100,40);
+		lbWhere.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbWhere);
+		
+		txtStuWhere = new JTextField();
+		txtStuWhere.setBounds(150,65,600,30);
+		txtStuWhere.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(txtStuWhere);
+		
+//		btnSelect
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setBounds(350, 100, 80, 35);
+		btnSelect.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnSelect.addActionListener(btnL);
+		jPanel.add(btnSelect);
+		
+		
+		/*******INSERT********/
+		JLabel lbInsert = new JLabel("INSERT");
+		lbInsert.setBounds(80,140,100,40);
+		lbInsert.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbInsert);
+		
+//		StuNum
+		JLabel lbStuNum = new JLabel("StuNum");
+		lbStuNum.setBounds(80,170,100,40);
+		lbStuNum.setFont(new Font("Verdana" ,Font.PLAIN,15));
+		jPanel.add(lbStuNum);
+		
+		txtStuNum = new JTextField();
+		txtStuNum.setBounds(80,200,80,30);
+		jPanel.add(txtStuNum);
+		
+//		ChargeProfNum
+		JLabel lbChargeProfNum = new JLabel("ChargeProfNum");
+		lbChargeProfNum.setBounds(180,170,150,40);
+		lbChargeProfNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbChargeProfNum);
+		
+		txtChargeProfNum = new JTextField();
+		txtChargeProfNum.setBounds(180,200,80,30);
+		jPanel.add(txtChargeProfNum);
+		
+//		StuAffDepNum
+		JLabel lbStuAffDepNum = new JLabel("StuAffDepNum");
+		lbStuAffDepNum.setBounds(320,170,150,40);
+		lbStuAffDepNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuAffDepNum);
+		
+		txtStuAffDepNum = new JTextField();
+		txtStuAffDepNum.setBounds(320,200,80,30);
+		jPanel.add(txtStuAffDepNum);
+		
+//		StuName
+		JLabel lbStuName = new JLabel("StuName");
+		lbStuName.setBounds(460,170,100,40);
+		lbStuName.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuName);
+		
+		txtStuName = new JTextField();
+		txtStuName.setBounds(460,200,80,30);
+		jPanel.add(txtStuName);
+		
+//		StuSSNum
+		JLabel lbStuSSNum = new JLabel("StuSSNum");
+		lbStuSSNum.setBounds(560,170,100,40);
+		lbStuSSNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuSSNum);
+		
+		txtStuSSNum = new JTextField();
+		txtStuSSNum.setBounds(560,200,80,30);
+		jPanel.add(txtStuSSNum);
+		
+//		StuAddress
+		JLabel lbStuAddress = new JLabel("StuAddress");
+		lbStuAddress.setBounds(660,170,100,40);
+		lbStuAddress.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuAddress);
+		
+		txtStuAddress = new JTextField();
+		txtStuAddress.setBounds(660,200,80,30);
+		jPanel.add(txtStuAddress);
+		
+//		StuPhoneNum
+		JLabel lbStuPhoneNum = new JLabel("StuPhoneNum");
+		lbStuPhoneNum.setBounds(760,170,150,40);
+		lbStuPhoneNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuPhoneNum);
+		
+		txtStuPhoneNum = new JTextField();
+		txtStuPhoneNum.setBounds(760,200,80,30);
+		jPanel.add(txtStuPhoneNum);
+		
+//		StuEmail
+		JLabel lbStuEmail = new JLabel("StuEmail");
+		lbStuEmail.setBounds(900,170,100,40);
+		lbStuEmail.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbStuEmail);
+		
+		txtStuEmail = new JTextField();
+		txtStuEmail.setBounds(900,200,80,30);
+		jPanel.add(txtStuEmail);
+		
+//		CurGrade
+		JLabel lbCurGrade = new JLabel("CurGrade");
+		lbCurGrade.setBounds(1000,170,100,40);
+		lbCurGrade.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbCurGrade);
+		
+		txtCurGrade = new JTextField();
+		txtCurGrade.setBounds(1000,200,80,30);
+		jPanel.add(txtCurGrade);
+		
+//		CurSem
+		JLabel lbCurSem = new JLabel("CurSem");
+		lbCurSem.setBounds(1100,170,100,40);
+		lbCurSem.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbCurSem);
+		
+		txtCurSem = new JTextField();
+		txtCurSem.setBounds(1100,200,80,30);
+		jPanel.add(txtCurSem);
+		
+//		btnInsert
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.setBounds(350, 250, 80, 35);
+		btnInsert.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnInsert.addActionListener(btnL);
+		jPanel.add(btnInsert);
+		
+		
+		
+		JTable jTable = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO = 
+				dbConnect.getTableDescription("Student");
+		Object[] columnsName = new Object[arrDescribeTableVO.size()];
+		for (int i = 0; i < arrDescribeTableVO.size(); i++) {
+			columnsName[i] = arrDescribeTableVO.get(i).getColumn_name();
+		}
+		model.setColumnIdentifiers(columnsName);
+
+		Object[] rowData = new Object[arrDescribeTableVO.size()];
+		System.out.println(arrDescribeTableVO.size());
+		ArrayList<StudentVO> arrStudentVO = dbConnect.selectStudent(condition);
+		for (int i = 0; i < arrStudentVO.size(); i++) {
+			System.out.println(arrStudentVO.get(i).getStuNum());
+			rowData[0] = arrStudentVO.get(i).getStuNum();
+			rowData[1] = arrStudentVO.get(i).getChargeProfNum();
+			rowData[2] = arrStudentVO.get(i).getAffDepNum();
+			rowData[3] = arrStudentVO.get(i).getStuName();
+			rowData[4] = arrStudentVO.get(i).getStuSSNum();
+			rowData[5] = arrStudentVO.get(i).getStuAddress();
+			rowData[6] = arrStudentVO.get(i).getStuPhoneNum();
+			rowData[7] = arrStudentVO.get(i).getStuEmail();
+			rowData[8] = arrStudentVO.get(i).getCurGrade();
+			rowData[9] = arrStudentVO.get(i).getStuPhoneNum();
+
+			model.addRow(rowData);
+		}
+
+		jTable.setModel(model);
+		jTable.setPreferredScrollableViewportSize(jTable.getPreferredSize());
+		jTable.setFillsViewportHeight(true);
+		jTable.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setRowHeight(20);
+		jTable.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(1200, 150));
+		jScrollPane.setBounds(75, 300, 1200, 150);
+//		jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum());
+		
+		jPanel.add(jScrollPane);
+		
+		
+		return jPanel;
+	}
+	
+	private JPanel getProfessorTable(String condition) {
+		JPanel jPanel = new JPanel();
+		jPanel.setBounds(0, 0, 1400, 650);
+		jPanel.setBackground(new Color(245, 245, 245));
+		jPanel.setLayout(null);
+		
+		/*******SELECT********/
+		JLabel lbSelect = new JLabel("SELECT");
+		lbSelect.setBounds(80,20,100,40);
+		lbSelect.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbSelect);
+		
+		JLabel lbWhere = new JLabel("Where : ");
+		lbWhere.setBounds(80,60,100,40);
+		lbWhere.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbWhere);
+		
+		txtProfWhere = new JTextField();
+		txtProfWhere.setBounds(150,65,600,30);
+		txtProfWhere.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(txtProfWhere);
+		
+//		btnSelect
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setBounds(350, 100, 80, 35);
+		btnSelect.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnSelect.addActionListener(btnL);
+		jPanel.add(btnSelect);
+		
+		
+		/*******INSERT********/
+		JLabel lbInsert = new JLabel("INSERT");
+		lbInsert.setBounds(80,140,100,40);
+		lbInsert.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbInsert);
+		
+//		ProfNum
+		JLabel lbProfNum = new JLabel("ProfNum");
+		lbProfNum.setBounds(80,170,100,40);
+		lbProfNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfNum);
+		
+		txtProfNum = new JTextField();
+		txtProfNum.setBounds(80,200,80,30);
+		jPanel.add(txtProfNum);
+		
+//		ProfAffDepNum
+		JLabel lbProfAffDepNum = new JLabel("ProfAffDepNum");
+		lbProfAffDepNum.setBounds(180,170,150,40);
+		lbProfAffDepNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfAffDepNum);
+		
+		txtProfAffDepNum = new JTextField();
+		txtProfAffDepNum.setBounds(180,200,80,30);
+		jPanel.add(txtProfAffDepNum);
+		
+//		ProfName
+		JLabel lbProfName = new JLabel("ProfName");
+		lbProfName.setBounds(320,170,100,40);
+		lbProfName.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfName);
+		
+		txtProfName = new JTextField();
+		txtProfName.setBounds(320,200,80,30);
+		jPanel.add(txtProfName);
+		
+//		ProfSSNum
+		JLabel lbProfSSNum = new JLabel("ProfSSNum");
+		lbProfSSNum.setBounds(420,170,100,40);
+		lbProfSSNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfSSNum);
+		
+		txtProfSSNum = new JTextField();
+		txtProfSSNum.setBounds(420,200,80,30);
+		jPanel.add(txtProfSSNum);
+		
+//		ProfAddress
+		JLabel lbProfAddress = new JLabel("ProfAddress");
+		lbProfAddress.setBounds(520,170,100,40);
+		lbProfAddress.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfAddress);
+		
+		txtProfAddress = new JTextField();
+		txtProfAddress.setBounds(520,200,80,30);
+		jPanel.add(txtProfAddress);
+		
+//		ProfPhoneNum
+		JLabel lbProfPhoneNum = new JLabel("ProfPhoneNum");
+		lbProfPhoneNum.setBounds(620,170,150,40);
+		lbProfPhoneNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfPhoneNum);
+		
+		txtProfPhoneNum = new JTextField();
+		txtProfPhoneNum.setBounds(620,200,80,30);
+		jPanel.add(txtProfPhoneNum);
+		
+//		ProfEmail
+		JLabel lbProfEmail = new JLabel("ProfEmail");
+		lbProfEmail.setBounds(760,170,100,40);
+		lbProfEmail.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProfEmail);
+		
+		txtProfEmail = new JTextField();
+		txtProfEmail.setBounds(760,200,80,30);
+		jPanel.add(txtProfEmail);
+		
+//		btnInsert
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.setBounds(350, 250, 80, 35);
+		btnInsert.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnInsert.addActionListener(btnL);
+		jPanel.add(btnInsert);
+		
+		
+		
+		JTable jTable = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO = 
+				dbConnect.getTableDescription("Professor");
+		Object[] columnsName = new Object[arrDescribeTableVO.size()];
+		for (int i = 0; i < arrDescribeTableVO.size(); i++) {
+			columnsName[i] = arrDescribeTableVO.get(i).getColumn_name();
+		}
+		model.setColumnIdentifiers(columnsName);
+
+		Object[] rowData = new Object[arrDescribeTableVO.size()];
+		System.out.println(arrDescribeTableVO.size());
+		ArrayList<ProfessorVO> arrProfessorVO = 
+				dbConnect.selectProfessor(condition);
+		for (int i = 0; i < arrProfessorVO.size(); i++) {
+			System.out.println(arrProfessorVO.get(i).getProfNum());
+			rowData[0] = arrProfessorVO.get(i).getProfNum();
+			rowData[1] = arrProfessorVO.get(i).getProfAffDepNum();
+			rowData[2] = arrProfessorVO.get(i).getProfName();
+			rowData[3] = arrProfessorVO.get(i).getProfSSNum();
+			rowData[4] = arrProfessorVO.get(i).getProfAddress();
+			rowData[5] = arrProfessorVO.get(i).getProfPhoneNum();
+			rowData[5] = arrProfessorVO.get(i).getProfEmail();
+
+			model.addRow(rowData);
+		}
+
+		jTable.setModel(model);
+		jTable.setPreferredScrollableViewportSize(jTable.getPreferredSize());
+		jTable.setFillsViewportHeight(true);
+		jTable.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setRowHeight(20);
+		jTable.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(1200, 150));
+		jScrollPane.setBounds(75, 300, 1200, 150);
+//		jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum());
+		
+		jPanel.add(jScrollPane);
+	
+		
+		
+		return jPanel;
+	}
+	
+	private JPanel getCourseTable(String condition) {
+		JPanel jPanel = new JPanel();
+		jPanel.setBounds(0, 0, 1400, 650);
+		jPanel.setBackground(new Color(245, 245, 245));
+		jPanel.setLayout(null);
+		
+		/*******SELECT********/
+		JLabel lbSelect = new JLabel("SELECT");
+		lbSelect.setBounds(80,20,100,40);
+		lbSelect.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbSelect);
+		
+		JLabel lbWhere = new JLabel("Where : ");
+		lbWhere.setBounds(80,60,100,40);
+		lbWhere.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbWhere);
+		
+		txtCourseWhere = new JTextField();
+		txtCourseWhere.setBounds(150,65,600,30);
+		txtCourseWhere.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(txtCourseWhere);
+		
+//		btnSelect
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setBounds(350, 100, 80, 35);
+		btnSelect.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnSelect.addActionListener(btnL);
+		jPanel.add(btnSelect);
+		
+		
+		/*******INSERT********/
+		JLabel lbInsert = new JLabel("INSERT");
+		lbInsert.setBounds(80,140,100,40);
+		lbInsert.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbInsert);
+		
+//		CourseNum
+		JLabel lbCourseNum = new JLabel("CourseNum");
+		lbCourseNum.setBounds(80,170,100,40);
+		lbCourseNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbCourseNum);
+		
+		txtCourseNum = new JTextField();
+		txtCourseNum.setBounds(80,200,80,30);
+		jPanel.add(txtCourseNum);
+		
+//		ChargeProfNum
+		JLabel lbChargeProfNum = new JLabel("ChargeProfNum");
+		lbChargeProfNum.setBounds(180,170,150,40);
+		lbChargeProfNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbChargeProfNum);
+		
+		txtChargeProfNum = new JTextField();
+		txtChargeProfNum.setBounds(180,200,80,30);
+		jPanel.add(txtChargeProfNum);
+		
+//		ProgressDepNum
+		JLabel lbProgressDepNum = new JLabel("ProgressDepNum");
+		lbProgressDepNum.setBounds(320,170,150,40);
+		lbProgressDepNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbProgressDepNum);
+		
+		txtProgressDepNum = new JTextField();
+		txtProgressDepNum.setBounds(320,200,80,30);
+		jPanel.add(txtProgressDepNum);
+		
+//		CourseName
+		JLabel lbCourseName = new JLabel("CourseName");
+		lbCourseName.setBounds(460,170,100,40);
+		lbCourseName.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbCourseName);
+		
+		txtCourseName = new JTextField();
+		txtCourseName.setBounds(460,200,80,30);
+		jPanel.add(txtCourseName);
+		
+//		ReceivedCredits
+		JLabel lbReceivedCredits = new JLabel("ReceivedCredits");
+		lbReceivedCredits.setBounds(560,170,150,40);
+		lbReceivedCredits.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbReceivedCredits);
+		
+		txtReceivedCredits = new JTextField();
+		txtReceivedCredits.setBounds(560,200,80,30);
+		jPanel.add(txtReceivedCredits);
+		
+//		CourseTime
+		JLabel lbCourseTime = new JLabel("CourseTime");
+		lbCourseTime.setBounds(700,170,100,40);
+		lbCourseTime.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbCourseTime);
+		
+		txtCourseTime = new JTextField();
+		txtCourseTime.setBounds(700,200,80,30);
+		jPanel.add(txtCourseTime);
+		
+//		LecRoom
+		JLabel lbLecRoom = new JLabel("LecRoom");
+		lbLecRoom.setBounds(800,170,100,40);
+		lbLecRoom.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbLecRoom);
+		
+		txtLecRoom = new JTextField();
+		txtLecRoom.setBounds(800,200,80,30);
+		jPanel.add(txtLecRoom);
+		
+//		btnInsert
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.setBounds(350, 250, 80, 35);
+		btnInsert.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnInsert.addActionListener(btnL);
+		jPanel.add(btnInsert);
+		
+		
+		
+		JTable jTable = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO = 
+				dbConnect.getTableDescription("Course");
+		Object[] columnsName = new Object[arrDescribeTableVO.size()];
+		for (int i = 0; i < arrDescribeTableVO.size(); i++) {
+			columnsName[i] = arrDescribeTableVO.get(i).getColumn_name();
+		}
+		model.setColumnIdentifiers(columnsName);
+
+		Object[] rowData = new Object[arrDescribeTableVO.size()];
+		System.out.println(arrDescribeTableVO.size());
+		ArrayList<CourseVO> arrCourseVO = 
+				dbConnect.selectCourse(condition);
+		for (int i = 0; i < arrCourseVO.size(); i++) {
+			System.out.println(arrCourseVO.get(i).getCourseNum());
+			rowData[0] = arrCourseVO.get(i).getCourseNum();
+			rowData[1] = arrCourseVO.get(i).getChargeProfNum();
+			rowData[2] = arrCourseVO.get(i).getProgressDepNum();
+			rowData[3] = arrCourseVO.get(i).getCourseName();
+			rowData[4] = arrCourseVO.get(i).getReceivedCredits();
+			rowData[5] = arrCourseVO.get(i).getCourseTime();
+			rowData[6] = arrCourseVO.get(i).getLecRoom();
+
+			model.addRow(rowData);
+		}
+
+		jTable.setModel(model);
+		jTable.setPreferredScrollableViewportSize(jTable.getPreferredSize());
+		jTable.setFillsViewportHeight(true);
+		jTable.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setRowHeight(20);
+		jTable.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(1200, 150));
+		jScrollPane.setBounds(75, 300, 1200, 150);
+//		jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum());
+		
+		jPanel.add(jScrollPane);
+		
+		
+		return jPanel;
+	}
+	
+	private JPanel getDepartmentTable(String condition) {
+		JPanel jPanel = new JPanel();
+		jPanel.setBounds(0, 0, 800, 450);
+		jPanel.setBackground(new Color(245, 245, 245));
+		jPanel.setLayout(null);
+		
+		/*******SELECT********/
+		JLabel lbSelect = new JLabel("SELECT");
+		lbSelect.setBounds(80,20,100,40);
+		lbSelect.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbSelect);
+		
+		JLabel lbWhere = new JLabel("Where : ");
+		lbWhere.setBounds(80,60,100,40);
+		lbWhere.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbWhere);
+		
+		txtDepWhere = new JTextField();
+		txtDepWhere.setBounds(150,65,600,30);
+		txtDepWhere.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(txtDepWhere);
+		
+//		btnSelect
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setBounds(350, 100, 80, 35);
+		btnSelect.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnSelect.addActionListener(btnL);
+		jPanel.add(btnSelect);
+		
+		
+		/*******INSERT********/
+		JLabel lbInsert = new JLabel("INSERT");
+		lbInsert.setBounds(80,140,100,40);
+		lbInsert.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbInsert);
+		
+//		DepNum
+		JLabel lbDepNum = new JLabel("DepNum");
+		lbDepNum.setBounds(80,170,100,40);
+		lbDepNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbDepNum);
+		
+		txtDepNum = new JTextField();
+		txtDepNum.setBounds(80,200,80,30);
+		jPanel.add(txtDepNum);
+		
+//		DepName
+		JLabel lbDepName = new JLabel("DepName");
+		lbDepName.setBounds(180,170,100,40);
+		lbDepName.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbDepName);
+		
+		txtDepName = new JTextField();
+		txtDepName.setBounds(180,200,80,30);
+		jPanel.add(txtDepName);
+		
+//		DepPhoneNum
+		JLabel lbDepPhoneNum = new JLabel("DepPhoneNum");
+		lbDepPhoneNum.setBounds(280,170,150,40);
+		lbDepPhoneNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbDepPhoneNum);
+		
+		txtDepPhoneNum = new JTextField();
+		txtDepPhoneNum.setBounds(280,200,80,30);
+		jPanel.add(txtDepPhoneNum);
+		
+//		btnInsert
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.setBounds(350, 250, 80, 35);
+		btnInsert.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnInsert.addActionListener(btnL);
+		jPanel.add(btnInsert);
+		
+		
+		
+		
+		JTable jTable = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO = 
+				dbConnect.getTableDescription("Department");
+		Object[] columnsName = new Object[arrDescribeTableVO.size()];
+		for (int i = 0; i < arrDescribeTableVO.size(); i++) {
+			columnsName[i] = arrDescribeTableVO.get(i).getColumn_name();
+		}
+		model.setColumnIdentifiers(columnsName);
+
+		Object[] rowData = new Object[arrDescribeTableVO.size()];
+		System.out.println(arrDescribeTableVO.size());
+		ArrayList<DepartmentVO> arrDepartmentVO = 
+				dbConnect.selectDepartment(condition);
+		for (int i = 0; i < arrDepartmentVO.size(); i++) {
+			System.out.println(arrDepartmentVO.get(i).getDepNum());
+			rowData[0] = arrDepartmentVO.get(i).getDepNum();
+			rowData[1] = arrDepartmentVO.get(i).getDepName();
+			rowData[2] = arrDepartmentVO.get(i).getDepPhoneNum();
+
+			model.addRow(rowData);
+		}
+
+		jTable.setModel(model);
+		jTable.setPreferredScrollableViewportSize(jTable.getPreferredSize());
+		jTable.setFillsViewportHeight(true);
+		jTable.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setRowHeight(20);
+		jTable.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(650, 150));
+		jScrollPane.setBounds(75, 300, 650, 150);
+//		jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum());
+		
+		jPanel.add(jScrollPane);
+		
+		
+		return jPanel;
+	}
+
+	private JPanel getAttendTable(String condition) {
+		JPanel jPanel = new JPanel();
+		jPanel.setBounds(0, 0, 1400, 650);
+		jPanel.setBackground(new Color(245, 245, 245));
+		jPanel.setLayout(null);
+		
+		/*******SELECT********/
+		JLabel lbSelect = new JLabel("SELECT");
+		lbSelect.setBounds(80,20,100,40);
+		lbSelect.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbSelect);
+		
+		JLabel lbWhere = new JLabel("Where : ");
+		lbWhere.setBounds(80,60,100,40);
+		lbWhere.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbWhere);
+		
+		txtAttendWhere = new JTextField();
+		txtAttendWhere.setBounds(150,65,600,30);
+		txtAttendWhere.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(txtAttendWhere);
+		
+//		btnSelect
+		JButton btnSelect = new JButton("Select");
+		btnSelect.setBounds(350, 100, 80, 35);
+		btnSelect.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnSelect.addActionListener(btnL);
+		jPanel.add(btnSelect);
+		
+		
+		/*******Class Resgisteration********/
+		JLabel lbInsert = new JLabel("*****Class Resgisteration*****");
+		lbInsert.setBounds(80,140,300,40);
+		lbInsert.setFont(new Font("Verdana", Font.PLAIN,17));
+		jPanel.add(lbInsert);
+		
+//		AttendStuNum
+		JLabel lbAttendStuNum = new JLabel("AttendStuNum");
+		lbAttendStuNum.setBounds(80,170,150,40);
+		lbAttendStuNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbAttendStuNum);
+		
+		txtAttendStuNum = new JTextField();
+		txtAttendStuNum.setBounds(80,200,80,30);
+		jPanel.add(txtAttendStuNum);
+		
+//		AttendCourseNum
+		JLabel lbAttendCourseNum = new JLabel("AttendCourseNum");
+		lbAttendCourseNum.setBounds(220,170,150,40);
+		lbAttendCourseNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbAttendCourseNum);
+		
+		txtAttendCourseNum = new JTextField();
+		txtAttendCourseNum.setBounds(220,200,80,30);
+		jPanel.add(txtAttendCourseNum);
+		
+//		AttendProfNum
+		JLabel lbAttendProfNum = new JLabel("AttendProfNum");
+		lbAttendProfNum.setBounds(380,170,150,40);
+		lbAttendProfNum.setFont(new Font("Verdana", Font.PLAIN,15));
+		jPanel.add(lbAttendProfNum);
+		
+		txtAttendProfNum = new JTextField();
+		txtAttendProfNum.setBounds(380,200,80,30);
+		jPanel.add(txtAttendProfNum);
+		
+//		btnInsert
+		JButton btnInsert = new JButton("Insert");
+		btnInsert.setBounds(350, 250, 80, 35);
+		btnInsert.setFont(new Font("Verdana", Font.PLAIN, 15));
+		btnInsert.addActionListener(btnL);
+		jPanel.add(btnInsert);
+		
+		
+		
+		JTable jTable = new JTable();
+		DefaultTableModel model = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO = 
+				dbConnect.getTableDescription("Attend");
+		Object[] columnsName = new Object[arrDescribeTableVO.size()];
+		for (int i = 0; i < arrDescribeTableVO.size(); i++) {
+			columnsName[i] = arrDescribeTableVO.get(i).getColumn_name();
+		}
+		model.setColumnIdentifiers(columnsName);
+
+		Object[] rowData = new Object[arrDescribeTableVO.size()];
+		System.out.println(arrDescribeTableVO.size());
+		ArrayList<AttendVO> arrAttendVO = 
+				dbConnect.selectAttend(condition);
+		for (int i = 0; i < arrAttendVO.size(); i++) {
+			System.out.println(arrAttendVO.get(i).getAttendStuNum() + " " + arrAttendVO.get(i).getAttendCourseNum() + " " + arrAttendVO.get(i).getAttendProfNum());
+			rowData[0] = arrAttendVO.get(i).getAttendStuNum();
+			rowData[1] = arrAttendVO.get(i).getAttendCourseNum();
+			rowData[2] = arrAttendVO.get(i).getAttendProfNum();
+			rowData[3] = arrAttendVO.get(i).getAttendanceScore();
+			rowData[4] = arrAttendVO.get(i).getMidScore();
+			rowData[5] = arrAttendVO.get(i).getFinScore();
+			rowData[6] = arrAttendVO.get(i).getEtcScore();
+			rowData[7] = arrAttendVO.get(i).getTotalScore();
+			rowData[8] = arrAttendVO.get(i).getGrade();
+
+			model.addRow(rowData);
+		}
+
+		jTable.setModel(model);
+		jTable.setPreferredScrollableViewportSize(jTable.getPreferredSize());
+		jTable.setFillsViewportHeight(true);
+		jTable.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable.setRowHeight(20);
+		jTable.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(1200, 150));
+		jScrollPane.setBounds(75, 300, 1200, 150);
+//		jScrollPane.getVerticalScrollBar().setValue(jScrollPane.getVerticalScrollBar().getMaximum());
+		
+		jPanel.add(jScrollPane);
+		
+		//make course table!
+		JTable jTable2 = new JTable();
+		DefaultTableModel model2 = new DefaultTableModel();
+
+		ArrayList<DescribeTableVO> arrDescribeTableVO2 = 
+				dbConnect.getTableDescription("Course");
+		Object[] columnsName2 = new Object[arrDescribeTableVO2.size()];
+		for (int i = 0; i < arrDescribeTableVO2.size(); i++) {
+			columnsName[i] = arrDescribeTableVO2.get(i).getColumn_name();
+		}
+		model2.setColumnIdentifiers(columnsName2);
+
+		Object[] rowData2 = new Object[arrDescribeTableVO2.size()];
+		System.out.println(arrDescribeTableVO2.size());
+		ArrayList<CourseVO> arrCourseVO = 
+				dbConnect.selectCourse(condition);//**********condition check
+		for (int i = 0; i < arrCourseVO.size(); i++) {
+			System.out.println(arrCourseVO.get(i).getCourseNum());
+			rowData[0] = arrCourseVO.get(i).getCourseNum();
+			rowData[1] = arrCourseVO.get(i).getChargeProfNum();
+			rowData[2] = arrCourseVO.get(i).getProgressDepNum();
+			rowData[3] = arrCourseVO.get(i).getCourseName();
+			rowData[4] = arrCourseVO.get(i).getReceivedCredits();
+			rowData[5] = arrCourseVO.get(i).getCourseTime();
+			rowData[6] = arrCourseVO.get(i).getLecRoom();
+
+			model.addRow(rowData);
+		}
+
+		jTable2.setModel(model2);
+		jTable2.setPreferredScrollableViewportSize(jTable2.getPreferredSize());
+		jTable2.setFillsViewportHeight(true);
+		jTable2.getTableHeader().setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable2.setFont(new Font("Verdana", Font.PLAIN, 17));
+		jTable2.setRowHeight(20);
+		jTable2.getTableHeader().setReorderingAllowed(false);
+
+		jScrollPane2 = new JScrollPane(jTable2);
+		jScrollPane2.setPreferredSize(new Dimension(1200, 150));
+		jScrollPane2.setBounds(75, 400, 1200, 150);
+		
+		jPanel.add(jScrollPane2);
+		
+		return jPanel;
+	}
+	
+	private class BtnListener implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
+
+			JButton b = (JButton) event.getSource();
+			String tableName;
+			String condition = "";
+			
+			String btnName=null;
+			btnName=b.getText();
+			switch(btnName) {
+				case "Search":
+					mainPanel.removeAll();
+					mainPanel.setLayout(null);
+	
+					tableName = strMenu[cmbMenu.getSelectedIndex()];
+					condition = "";
+					jTable = null;
+					tempPanel = null;
+	
+					switch (tableName) {
+					case "STUDENT":
+						tempPanel = getStudentTable(condition);
+						break;
+					case "PROFESSOR":
+						tempPanel = getProfessorTable(condition);
+						break;
+					case "COURSE":
+						tempPanel = getCourseTable(condition);
+						break;
+					case "DEPARTMENT":
+						tempPanel = getDepartmentTable(condition);
+						break;
+					case "ATTEND":
+						tempPanel = getAttendTable(condition);
+						break;
+					}
+	
+					mainPanel.add(tempPanel);
+					add(mainPanel);
+	
+					setVisible(true);
+					validate();
+					repaint();
+					break;
+				case "Insert":
+					mainPanel.removeAll();
+					mainPanel.setLayout(null);
+	
+					tableName = strMenu[cmbMenu.getSelectedIndex()];
+					jTable = null;
+					tempPanel = null;
+	
+					switch (tableName) {
+					case "STUDENT":
+						dbConnect.insertStudent(txtStuNum.getText(), txtChargeProfNum.getText(), txtStuAffDepNum.getText(), txtStuName.getText(), txtStuSSNum.getText(), txtStuAddress.getText(), 
+								Integer.parseInt(txtStuPhoneNum.getText()),
+								txtStuEmail.getText(),
+								Integer.parseInt(txtCurGrade.getText()),
+								Integer.parseInt(txtCurSem.getText()));
+						tempPanel = getStudentTable(condition);
+						break;
+					case "PROFESSOR":
+						dbConnect.insertProfessor(txtProfNum.getText(), txtProfAffDepNum.getText(), txtProfName.getText(), txtProfSSNum.getText(), txtProfAddress.getText(), 
+								Integer.parseInt(txtProfPhoneNum.getText()), 
+								txtProfEmail.getText());
+						tempPanel = getProfessorTable(condition);
+						break;
+					case "COURSE":
+						dbConnect.insertCourse(txtCourseNum.getText(), txtChargeProfNum.getText(), txtProgressDepNum.getText(), txtCourseName.getText(),
+								Float.parseFloat(txtReceivedCredits.getText()),
+								Integer.parseInt(txtCourseTime.getText()),
+								txtLecRoom.getText());
+						tempPanel = getCourseTable(condition);
+						break;
+					case "DEPARTMENT":
+						dbConnect.insertDepartment(txtDepNum.getText(), txtDepName.getText(),
+								Integer.parseInt(txtDepPhoneNum.getText()));
+						tempPanel = getDepartmentTable(condition);
+						break;
+					case "ATTEND":
+						dbConnect.insertAttend(txtAttendStuNum.getText(), txtAttendCourseNum.getText(), txtAttendProfNum.getText(),
+								0, 0, 0, 0, 0, null);
+						tempPanel = getDepartmentTable(condition);
+						break;
+					}
+	
+					mainPanel.add(tempPanel);
+					add(mainPanel);
+	
+					setVisible(true);
+					validate();
+					repaint();
+					break;
+					
+				case "Select":
+					mainPanel.removeAll();
+					mainPanel.setLayout(null);
+	
+					tableName = strMenu[cmbMenu.getSelectedIndex()];
+					jTable = null;
+					tempPanel = null;
+	
+					switch (tableName) {
+					case "STUDENT":
+						condition="where ";
+						condition+=txtStuWhere.getText();
+						tempPanel = getStudentTable(condition);
+						break;
+					case "PROFESSOR":
+						condition="where ";
+						condition+=txtProfWhere.getText();
+						tempPanel = getProfessorTable(condition);
+						break;
+					case "COURSE":
+						condition="where ";
+						condition+=txtCourseWhere.getText();
+						tempPanel = getCourseTable(condition);
+						break;
+					case "DEPARTMENT":
+						condition="where ";
+						condition+=txtDepWhere.getText();
+						tempPanel = getDepartmentTable(condition);
+						break;
+					}
+	
+					mainPanel.add(tempPanel);
+					add(mainPanel);
+	
+					setVisible(true);
+					validate();
+					repaint();
+					break;
+				
+			}
+		}
+
+	} // BtnListener class
+
+} // PrimaryPanel class

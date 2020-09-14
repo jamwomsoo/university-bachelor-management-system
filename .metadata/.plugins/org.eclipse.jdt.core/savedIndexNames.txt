@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+C:\Users\bigbe\Desktop\2019년 1학기\Data Base\프로젝트\AAIS APP\AAIS Project2\.metadata\.plugins\org.eclipse.jdt.core
+3135830394.index
